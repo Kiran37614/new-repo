@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" data-theme="light" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile | Restaurant</title>
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/dist/css/output.css" />
+    <link rel="stylesheet" href="/assets/css/profile.css" />
+  </head>
+  <body class="profile-page">
+    <header class="border-base-content/20 bg-base-100 py-0.25 fixed top-0 z-20 w-full border-b">
+      <nav class="navbar mx-auto max-w-[1280px] rounded-b-xl px-4 sm:px-6 lg:px-8">
+        <div class="w-full lg:flex lg:items-center lg:gap-2">
+          <div class="navbar-start items-center justify-between max-lg:w-full">
+            <a class="text-base-content flex items-center gap-3 text-xl font-semibold" href="/">
+              Restaurant
+            </a>
+
+            <div class="flex items-center gap-3 lg:hidden">
+              <a href="/users/profile" class="btn btn-outline btn-secondary btn-square" aria-label="My profile">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="size-5">
+                  <circle cx="12" cy="8" r="4"></circle>
+                  <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"></path>
+                </svg>
+              </a>
+              <a href="/users/logout" class="btn btn-primary btn-sm">Logout</a>
+            </div>
+          </div>
+
+          <div id="navbar-block-4" class="lg:navbar-center transition-height collapse hidden grow overflow-hidden font-medium duration-300 lg:flex">
+            <div class="text-base-content flex gap-6 text-base max-lg:mt-4 max-lg:flex-col lg:items-center">
+              <a href="/#home" class="hover:text-primary nav-link">Home</a>
+              <a href="/#about-us" class="hover:text-primary nav-link">About Us</a>
+              <a href="/#services" class="hover:text-primary nav-link">Services</a>
+              <a href="/#team" class="hover:text-primary nav-link">Team</a>
+              <a href="/#faqs" class="hover:text-primary nav-link">FAQS</a>
+            </div>
+          </div>
+
+          <div class="navbar-end max-lg:hidden">
+            <a href="/users/profile" class="btn btn-outline btn-secondary btn-square me-5" aria-label="My profile">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="size-5">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"></path>
+              </svg>
+            </a>
+            <a href="/users/logout" class="btn btn-primary">Logout</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="profile-shell">
+
+      <section class="profile-card profile-photo-card">
+        <img class="profile-avatar" th:src="${user.profileImageUrl != null ? user.profileImageUrl : '/assets/img/avatars/1.png'}" alt="Profile photo" />
+
+        <div class="profile-photo-copy">
+          <h2 th:text="${user.fullName}">User Name</h2>
+          <p th:text="${user.email}">user@email.com</p>
+        </div>
+
+        <form class="profile-photo-form" action="/users/profile/photo" method="post" enctype="multipart/form-data">
+          <input class="profile-file" type="file" name="profilePhoto" accept="image/*" required />
+          <button class="profile-btn" type="submit">Update Profile Photo</button>
+        </form>
+      </section>
+
+      <section class="profile-card profile-form-card">
+        <h1 class="profile-form-title">Change User Information Here</h1>
+
+        <div th:if="${errorMessage}" class="profile-flash profile-flash-error" th:text="${errorMessage}"></div>
+        <div th:if="${successMessage}" class="profile-flash profile-flash-success" th:text="${successMessage}"></div>
+
+        <form action="/users/profile/update" method="post">
+          <div class="profile-grid">
+            <div class="profile-field-group">
+              <label class="profile-label" for="fullName">Full Name</label>
+              <input class="profile-input" id="fullName" name="fullName" type="text" th:value="${user.fullName}" required />
+            </div>
+
+            <div class="profile-field-group">
+              <label class="profile-label" for="email">Email Address</label>
+              <input class="profile-input" id="email" name="email" type="email" th:value="${user.email}" required />
+            </div>
+
+            <div class="profile-field-group full">
+              <label class="profile-label" for="address">Address</label>
+              <input class="profile-input" id="address" name="address" type="text" th:value="${user.address}" />
+            </div>
+
+            <div class="profile-field-group">
+              <label class="profile-label" for="phoneNumber">Phone Number</label>
+              <input class="profile-input" id="phoneNumber" name="phoneNumber" type="tel" th:value="${user.phoneNumber}" />
+            </div>
+
+            <div class="profile-field-group">
+              <label class="profile-label" for="city">City</label>
+              <input class="profile-input" id="city" name="city" type="text" th:value="${user.city}" />
+            </div>
+
+            <div class="profile-field-group">
+              <label class="profile-label" for="stateProvince">State/Province</label>
+              <input class="profile-input" id="stateProvince" name="stateProvince" type="text" th:value="${user.stateProvince}" />
+            </div>
+
+            <div class="profile-field-group">
+              <label class="profile-label" for="country">Country</label>
+              <input class="profile-input" id="country" name="country" type="text" th:value="${user.country}" />
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <a href="/" class="profile-btn-secondary">Back to Home</a>
+            <button class="profile-btn" type="submit">Update Information</button>
+          </div>
+        </form>
+
+        <form th:action="@{'/users/delete/' + ${user.id}}" method="post" style="margin-top: 14px;">
+          <button type="submit" class="profile-btn-danger">Delete Account</button>
+        </form>
+      </section>
+    </div>
+  </body>
+</html>

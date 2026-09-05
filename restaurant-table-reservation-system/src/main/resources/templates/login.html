@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" data-theme="light" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Restaurant</title>
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/dist/css/output.css" />
+    <link rel="stylesheet" href="/assets/css/auth.css" />
+  </head>
+
+  <body class="auth-page">
+    <header class="border-base-content/20 bg-base-100 py-0.25 fixed top-0 z-20 w-full border-b">
+      <nav class="navbar mx-auto max-w-[1280px] rounded-b-xl px-4 sm:px-6 lg:px-8">
+        <div class="w-full lg:flex lg:items-center lg:gap-2">
+          <div class="navbar-start">
+            <a class="text-base-content flex items-center gap-3 text-xl font-semibold" href="/">
+              Restaurant
+            </a>
+          </div>
+
+          <div id="navbar-block-4" class="lg:navbar-center transition-height collapse hidden grow overflow-hidden font-medium duration-300 lg:flex">
+            <div class="text-base-content flex gap-6 text-base max-lg:mt-4 max-lg:flex-col lg:items-center">
+              <a href="/#home" class="hover:text-primary nav-link">Home</a>
+              <a href="/#about-us" class="hover:text-primary nav-link">About Us</a>
+              <a href="/#services" class="hover:text-primary nav-link">Services</a>
+              <a href="/#team" class="hover:text-primary nav-link">Team</a>
+              <a href="/#faqs" class="hover:text-primary nav-link">FAQS</a>
+            </div>
+          </div>
+
+          <div class="navbar-end max-lg:hidden">
+            <a href="/register" class="btn btn-primary btn-sm">Register</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="auth-shell">
+      <div class="auth-row">
+        <div class="auth-label"></div>
+
+        <div class="auth-card">
+          <div class="auth-image-pane">
+            <img src="/assets/img/dishes-hero.png" alt="Burger and dishes" />
+          </div>
+
+          <div class="auth-form-pane">
+            <div class="auth-form-wrap">
+              <span class="auth-brand">
+                <span class="auth-brand-badge">R</span>
+                Restaurant
+              </span>
+
+              <h1 class="auth-title">Login to your account</h1>
+              <p class="auth-subtitle">Welcome back. Sign in with your email.</p>
+
+              <div th:if="${errorMessage}" class="auth-alert auth-alert-error" th:text="${errorMessage}"></div>
+              <div th:if="${successMessage}" class="auth-alert auth-alert-success" th:text="${successMessage}"></div>
+
+              <form action="/users/login" method="post">
+                <input class="auth-field" type="email" name="email" placeholder="Email address" required />
+                <input class="auth-field" type="password" name="password" placeholder="Password" required />
+
+                <div class="auth-row-inline">
+                  <label class="auth-check">
+                    <input type="checkbox" name="rememberMe" />
+                    Remember me
+                  </label>
+                  <a class="auth-link" href="#">Forgot password?</a>
+                </div>
+
+                <button class="auth-button" type="submit">Login</button>
+              </form>
+
+              <div class="auth-divider">or login with</div>
+
+              <div class="auth-social">
+                <button type="button" class="auth-social-btn">Google</button>
+                <button type="button" class="auth-social-btn">Facebook</button>
+              </div>
+
+              <p class="auth-foot">
+                Do not have an account?
+                <a href="/register">Create an account</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
