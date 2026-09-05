@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    tools {
+        maven 'M3' // Must match the name configured in Jenkins Global Tool Configuration
+    }
+    stages {
+        stage('Code Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Kiran37614/new-repo.git'
+            }
+        }
+        stage('Maven Test & Compile') {
+            steps {
+                sh 'mvn clean package -DskipTests=false'
+            }
+        }
+        stage('SonarQube Static Analysis') {
+            steps {
+                // Requires the SonarQube Scanner plugin installed in Jenkins
+                withSonarQubeEnv('SonarQubeServer') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+        stage('Docker Image Construction & Deployment') {
+            steps {
+                sh '''
+                docker build -t restaurant-app:latest .
+                docker rm -f restaurant-container || true
+                docker run -d --name restaurant-container -p 8080:8080 restaurant-app:latest
+                '''
+            }
+        }
+    }
+}
