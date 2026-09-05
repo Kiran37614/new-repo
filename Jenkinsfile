@@ -33,7 +33,7 @@ sh 'mvn -f restaurant-table-reservation-system/pom.xml org.sonarsource.scanner.m
                     sh '''
                     docker build -t restaurant-app:latest .
                     docker rm -f restaurant-container || true
-                    docker run -d --name restaurant-container -p 8081:8080 restaurant-app:latest
+                   docker run -d --name restaurant-container --add-host=host.docker.internal:host-gateway -p 8081:8080 restaurant-app:latest
                     '''
                 }
             }
