@@ -1,7 +1,8 @@
+
 pipeline {
     agent any
     tools {
-        maven 'M3' // Must match the name configured in Jenkins Global Tool Configuration
+        maven 'M3'
     }
     stages {
         stage('Code Checkout') {
@@ -11,33 +12,29 @@ pipeline {
         }
         stage('Maven Test & Compile') {
             steps {
-                sh 'mvn clean package -DskipTests=false'
+                // The -f flag forces Maven to read the pom.xml inside the subfolder
+                sh 'mvn -f restaurant-table-reservation-system/pom.xml clean package -DskipTests=false'
             }
         }
         stage('SonarQube Static Analysis') {
             steps {
-                // Requires the SonarQube Scanner plugin installed in Jenkins
                 withSonarQubeEnv('SonarQubeServer') {
-                    sh 'mvn sonar:sonar'
+                    // Force the Sonar scanner to read from the subfolder pom.xml
+                    sh 'mvn -f restaurant-table-reservation-system/pom.xml sonar:sonar'
                 }
             }
         }
         stage('Docker Image Construction & Deployment') {
             steps {
-                sh '''
-                docker build -t restaurant-app:latest .
-                docker rm -f restaurant-container || true
-                docker run -d --name restaurant-container -p 8080:8080 restaurant-app:latest
-                '''
+                // Switch contexts into the subfolder to pick up the jar target binaries
+                dir('restaurant-table-reservation-system') {
+                    sh '''
+                    docker build -t restaurant-app:latest .
+                    docker rm -f restaurant-container || true
+                    docker run -d --name restaurant-container -p 8080:8080 restaurant-app:latest
+                    '''
+                }
             }
-post {
- success {
-    echo 'Build success'
-  }
- failure {
-    echo 'build failed'
-}       
-}
+        }
     }
-}
 }
