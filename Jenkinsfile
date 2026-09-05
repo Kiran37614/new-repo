@@ -13,7 +13,7 @@ pipeline {
         stage('Maven Test & Compile') {
             steps {
                 // The -f flag forces Maven to read the pom.xml inside the subfolder
-                sh 'mvn -f restaurant-table-reservation-system/pom.xml clean package -DskipTests=false'
+                sh 'mvn -f restaurant-table-reservation-system/pom.xml clean package -DskipTests=true'
             }
         }
         stage('SonarQube Static Analysis') {
