@@ -3,6 +3,7 @@ pipeline {
     agent any
     tools {
         maven 'M3'
+        jdk 'JDK-21'
     }
     stages {
         stage('Code Checkout') {
@@ -20,7 +21,8 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQubeServer') {
                     // Force the Sonar scanner to read from the subfolder pom.xml
-                    sh 'mvn -f restaurant-table-reservation-system/pom.xml sonar:sonar'
+sh 'mvn -f restaurant-table-reservation-system/pom.xml org.sonarsource.scanner.maven:sonar-maven-plugin:3.10.0.2594:sonar'
+                    
                 }
             }
         }
